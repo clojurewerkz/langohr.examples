@@ -7,11 +7,6 @@
             [langohr.consumers :as lc]
             [langohr.basic     :as lb]))
 
-(def ^{:const true}
-  default-exchange-name "")
-
-
-
 (defn start-consumer
   "Starts a consumer bound to the given topic exchange in a separate thread"
   [ch topic-name username]
