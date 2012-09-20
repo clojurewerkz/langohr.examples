@@ -13,7 +13,9 @@
                                        :snapshots true
                                        :releases {:checksum :fail :update :always}}}
   :profiles {:hello-world {:main clojurewerkz.langohr.examples.hello-world}
-             :blabbr      {:main clojurewerkz.langohr.examples.blabbr}}
+             :blabbr      {:main clojurewerkz.langohr.examples.blabbr}
+             :weathr      {:main clojurewerkz.langohr.examples.weathr}}
   :aliases  {"hello-world" ["with-profile" "hello-world"]
-             "blabbr"      ["with-profile" "blabbr"]}
+             "blabbr"      ["with-profile" "blabbr"]
+             "weathr"      ["with-profile" "weathr"]}
   :jvm-opts ["-Xmx512m"])
