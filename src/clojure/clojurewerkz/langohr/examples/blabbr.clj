@@ -11,7 +11,7 @@
   "Starts a consumer bound to the given topic exchange in a separate thread"
   [ch topic-name username]
   (let [queue-name (format "nba.newsfeeds.%s" username)
-        handler    (fn [ch {:keys [content-type delivery-tag type] :as meta} ^bytes payload]
+        handler    (fn [ch metadata ^bytes payload]
                      (println (format "[consumer] %s received %s" username (String. payload "UTF-8"))))]
     (lq/declare ch queue-name :exclusive false :auto-delete true)
     (lq/bind    ch queue-name topic-name)
