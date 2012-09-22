@@ -14,8 +14,10 @@
                                        :releases {:checksum :fail :update :always}}}
   :profiles {:hello-world {:main clojurewerkz.langohr.examples.hello-world}
              :blabbr      {:main clojurewerkz.langohr.examples.blabbr}
-             :weathr      {:main clojurewerkz.langohr.examples.weathr}}
+             :weathr      {:main clojurewerkz.langohr.examples.weathr}
+             :redelivery  {:main clojurewerkz.langohr.examples.redelivery}}
   :aliases  {"hello-world" ["with-profile" "hello-world"]
              "blabbr"      ["with-profile" "blabbr"]
-             "weathr"      ["with-profile" "weathr"]}
+             "weathr"      ["with-profile" "weathr"]
+             "redelivery"  ["with-profile" "redelivery"]}
   :jvm-opts ["-Xmx512m"])
