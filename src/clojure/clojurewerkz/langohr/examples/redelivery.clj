@@ -20,8 +20,8 @@
 
 (defn start-acking-consumer
   [ch queue id]
-  (let [handler (fn [ch {:keys [headers delivery-tag]} ^bytes payload]
-                  (println (format "%s received a message, i = %d, acking..." id (get headers "i")))
+  (let [handler (fn [ch {:keys [headers delivery-tag redelivery?]} ^bytes payload]
+                  (println (format "%s received a message, i = %d, redelivery? = %s, acking..." id (get headers "i") redelivery?))
                   (lb/ack ch delivery-tag))]
     (.start (Thread. (fn []
                        (lc/subscribe ch queue handler :auto-ack false))))))
@@ -45,6 +45,8 @@
         chx      (lch/open conn3)
         exchange "amq.direct"
         queue    "langohr.examples.redelivery"]
+    (lb/qos ch1 1)
+    (lb/qos ch2 1)
     (lq/declare chx queue :auto-delete true :exclusive false)
     (lq/bind    chx queue exchange :routing-key "key1")
     ;; this consumer will ack messages
@@ -62,8 +64,11 @@
                     (println "---------------- Shutting down consumer 2 ----------------")
                     (rmq/close ch2)))
       (after 8000 (fn []
-                     (.cancel future)
+                    (println "Shutting down...")
+                     (.shutdownNow es)
+                     (lq/purge chx queue)
                      (rmq/close ch1)
+                     (rmq/close chx)
                      (rmq/close conn1)
                      (rmq/close conn2)
                      (rmq/close conn3))))))
