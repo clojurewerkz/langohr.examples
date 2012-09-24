@@ -12,12 +12,16 @@
                  "sonatype-snapshots" {:url "http://oss.sonatype.org/content/repositories/snapshots"
                                        :snapshots true
                                        :releases {:checksum :fail :update :always}}}
-  :profiles {:hello-world {:main clojurewerkz.langohr.examples.hello-world}
-             :blabbr      {:main clojurewerkz.langohr.examples.blabbr}
-             :weathr      {:main clojurewerkz.langohr.examples.weathr}
-             :redelivery  {:main clojurewerkz.langohr.examples.redelivery}}
+  :profiles {:hello-world    {:main clojurewerkz.langohr.examples.hello-world}
+             :blabbr         {:main clojurewerkz.langohr.examples.blabbr}
+             :weathr         {:main clojurewerkz.langohr.examples.weathr}
+             :redelivery     {:main clojurewerkz.langohr.examples.redelivery}
+             :fanout-routing {:main clojurewerkz.langohr.examples.fanout-routing}
+             :direct-routing {:main clojurewerkz.langohr.examples.direct-routing}}
   :aliases  {"hello-world" ["with-profile" "hello-world"]
              "blabbr"      ["with-profile" "blabbr"]
              "weathr"      ["with-profile" "weathr"]
-             "redelivery"  ["with-profile" "redelivery"]}
+             "redelivery"  ["with-profile" "redelivery"]
+             "fanout-routing"  ["with-profile" "fanout-routing"]
+             "direct-routing"  ["with-profile" "direct-routing"]}
   :jvm-opts ["-Xmx512m"])
