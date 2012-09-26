@@ -3,7 +3,7 @@
   :min-lein-version "2.0.0"
   :license {:name "Eclipse Public License"}
   :dependencies [[org.clojure/clojure     "1.4.0"]
-                 [com.novemberain/langohr "1.0.0-beta4"]]
+                 [com.novemberain/langohr "1.0.0-beta9"]]
   :source-paths      ["src/clojure"]
   :url "https://github.com/clojurewerkz/langohr.examples"
   :repositories {"sonatype" {:url "http://oss.sonatype.org/content/repositories/releases"
@@ -17,11 +17,13 @@
              :weathr         {:main clojurewerkz.langohr.examples.weathr}
              :redelivery     {:main clojurewerkz.langohr.examples.redelivery}
              :fanout-routing {:main clojurewerkz.langohr.examples.fanout-routing}
-             :direct-routing {:main clojurewerkz.langohr.examples.direct-routing}}
+             :direct-routing {:main clojurewerkz.langohr.examples.direct-routing}
+             :mandatory-publishing {:main clojurewerkz.langohr.examples.mandatory-publishing}}
   :aliases  {"hello-world" ["with-profile" "hello-world"]
              "blabbr"      ["with-profile" "blabbr"]
              "weathr"      ["with-profile" "weathr"]
              "redelivery"  ["with-profile" "redelivery"]
              "fanout-routing"  ["with-profile" "fanout-routing"]
-             "direct-routing"  ["with-profile" "direct-routing"]}
+             "direct-routing"  ["with-profile" "direct-routing"]
+             "mandatory-publishing"  ["with-profile" "mandatory-publishing"]}
   :jvm-opts ["-Xmx512m"])
