@@ -31,9 +31,9 @@
     (let [qname (.getQueue (lq/declare ch "" :auto-delete true :exclusive false))]
       (lq/bind ch qname ename :arguments {"os" "osx" "cores" 4 "x-match" "any"})
       (start-consumer ch qname))    
-    (lb/publish ch ename "" "For 8 cores Linux" :content-type "text/plain" :headers {"os" "linux" "cores" 8})
-    (lb/publish ch ename "" "For 8 cores Linux" :content-type "text/plain" :headers {"os" "osx"   "cores" 8})
-    (lb/publish ch ename "" "For 4 cores Linux" :content-type "text/plain" :headers {"os" "linux" "cores" 4})
+    (lb/publish ch ename "" "8 cores/Linux" :content-type "text/plain" :headers {"os" "linux" "cores" 8})
+    (lb/publish ch ename "" "8 cores/OS X"  :content-type "text/plain" :headers {"os" "osx"   "cores" 8})
+    (lb/publish ch ename "" "4 cores/Linux" :content-type "text/plain" :headers {"os" "linux" "cores" 4})
     (Thread/sleep 2000)
     (println "[main] Disconnecting...")
     (rmq/close ch)
