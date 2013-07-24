@@ -15,8 +15,7 @@
                      (println (format "[consumer] %s received %s" username (String. payload "UTF-8"))))]
     (lq/declare ch queue-name :exclusive false :auto-delete true)
     (lq/bind    ch queue-name topic-name)
-    (.start (Thread. (fn []
-                       (lc/subscribe ch queue-name handler :auto-ack true))))))
+    (lc/subscribe ch queue-name handler :auto-ack true)))
 
 (defn -main
   [& args]

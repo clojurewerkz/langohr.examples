@@ -14,10 +14,8 @@
   (let [handler (fn [ch metadata ^bytes payload]
                   (println (format "[consumer] %s received a message: %s"
                                    queue-name
-                                   (String. payload "UTF-8"))))
-        thread  (Thread. (fn []
-                           (lc/subscribe ch queue-name handler :auto-ack true)))]
-    (.start thread)))
+                                   (String. payload "UTF-8"))))]
+    (lc/subscribe ch queue-name handler :auto-ack true)))
 
 (defn -main
   [& args]

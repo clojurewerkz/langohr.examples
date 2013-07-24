@@ -17,8 +17,7 @@
         handler     (fn [ch {:keys [routing-key] :as meta} ^bytes payload]
                       (println (format "[consumer] Consumed '%s' from %s, routing key: %s" (String. payload "UTF-8") queue-name' routing-key)))]
     (lq/bind    ch queue-name' weather-exchange :routing-key topic-name)
-    (.start (Thread. (fn []
-                       (lc/subscribe ch queue-name' handler :auto-ack true))))))
+    (lc/subscribe ch queue-name' handler :auto-ack true)))
 
 (defn publish-update
   "Publishes a weather update"
