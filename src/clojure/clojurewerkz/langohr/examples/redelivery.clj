@@ -23,15 +23,13 @@
   (let [handler (fn [ch {:keys [headers delivery-tag redelivery?]} ^bytes payload]
                   (println (format "%s received a message, i = %d, redelivery? = %s, acking..." id (get headers "i") redelivery?))
                   (lb/ack ch delivery-tag))]
-    (.start (Thread. (fn []
-                       (lc/subscribe ch queue handler :auto-ack false))))))
+    (lc/subscribe ch queue handler :auto-ack false)))
 
 (defn start-skipping-consumer
   [ch queue id]
   (let [handler (fn [ch {:keys [headers delivery-tag]} ^bytes payload]
                   (println (format "%s received a message, i = %d" id (get headers "i"))))]
-    (.start (Thread. (fn []
-                       (lc/subscribe ch queue handler :auto-ack false))))))
+    (lc/subscribe ch queue handler :auto-ack false)))
 
 
 (defn -main

@@ -20,9 +20,7 @@
 (defn start-consumer
   "Starts a consumer in a separate thread"
   [ch queue-name]
-  (let [thread (Thread. (fn []
-                          (lc/subscribe ch queue-name message-handler :auto-ack true)))]
-    (.start thread)))
+  (lc/subscribe ch queue-name message-handler :auto-ack true))
 
 (defn -main
   [& args]
