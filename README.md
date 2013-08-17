@@ -2,24 +2,19 @@
 
 This is a repository with examples used in documentation guides for Langohr, a [Clojure RabbitMQ client](http://clojurerabbitmq.info).
 
-## Development
+## Running Examples
 
 The project uses [Leiningen 2](https://github.com/technomancy/leiningen/blob/master/doc/TUTORIAL.md). Make
 sure you have it installed.
 
+Every example is an individual runnable namespace. Run them like so:
 
-### Hello, World
+    lein run -m "clojurewerkz.langohr.examples.hello-world"
+    lein run -m "clojurewerkz.langohr.examples.blabbr"
+    lein run -m "clojurewerkz.langohr.examples.weathr"
+    lein run -m "clojurewerkz.langohr.examples.redelivery"
 
-To run the Hello, World example use
-
-    lein2 hello-world run
-
-
-### Blabbr
-
-To run the Blabbr example use
-
-    lein2 blabbr run
+and so on.
 
 
 ## License
