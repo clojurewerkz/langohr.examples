@@ -21,4 +21,5 @@
     (Thread/sleep 600)
     (println (format "Queue %s has %d messages" qname (lq/message-count ch qname)))
     (println "[main] Disconnecting...")
+    (rmq/close ch)
     (rmq/close conn)))
