@@ -24,7 +24,8 @@
 
 (defn -main
   [& args]
-  (let [conn (rmq/connect {:automatically-recover true})
+  ;; Topology recovery requires Langohr 1.8.0+. MK.
+  (let [conn (rmq/connect {:automatically-recover true :automatically-recover-topology false})
         ch   (lch/open conn)
         q    "langohr.examples.recovery.example1.q"
         x    ""]
