@@ -26,11 +26,21 @@
   [& args]
   ;; Topology recovery requires Langohr 1.8.0+. MK.
   (let [conn (rmq/connect {:automatically-recover true :automatically-recover-topology true})
-        ch   (lch/open conn)
-        q    "langohr.examples.recovery.example1.q"
-        x    ""]
-    (println (format "[main] Connected. Channel id: %d" (.getChannelNumber ch)))
-    (start-consumer ch q)
+        ch1  (lch/open conn)
+        ch2  (lch/open conn)
+        ch3  (lch/open conn)
+        ch4  (lch/open conn)
+        ch5  (lch/open conn)
+        x    (lx/topic "langohr.examples.recovery.topic" :durable true)
+        q1   "langohr.examples.recovery.client_named_queue1"
+        q2   "langohr.examples.recovery.client_named_queue1"
+        q3   "langohr.examples.recovery.client_named_queue1"
+        q4   (lq/declare-server-named ch1 :exclusive true)
+        q5   (lq/declare-server-named ch2 :exclusive true)
+        q6   (lq/declare-server-named ch2 :exclusive true)]
+    (println "Connected.")
+    (println "Initialized the topology")
+    (lc/subscribe ch q1)
     (while true
       (Thread/sleep 1000)
       (try
