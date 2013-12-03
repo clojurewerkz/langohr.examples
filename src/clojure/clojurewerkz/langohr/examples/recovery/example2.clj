@@ -31,8 +31,8 @@
         ch5  (lch/open conn)
         x    "langohr.examples.recovery.topic"
         q1   "langohr.examples.recovery.client_named_queue1"
-        q2   "langohr.examples.recovery.client_named_queue1"
-        q3   "langohr.examples.recovery.client_named_queue1"
+        q2   "langohr.examples.recovery.client_named_queue2"
+        q3   "langohr.examples.recovery.client_named_queue3"
         q4   (lq/declare-server-named ch1 :exclusive true)
         q5   (lq/declare-server-named ch2 :exclusive true)
         q6   (lq/declare-server-named ch3 :exclusive true)
@@ -81,7 +81,7 @@
                   :auto-ack true)
 
     (while true
-      (Thread/sleep 1000)
+      (Thread/sleep 2000)
       (try
         (let [rk (rand-nth ["abc" "def" "xyz" "123"])]
           (println (format "Publishing a message with routing key %s" rk))
