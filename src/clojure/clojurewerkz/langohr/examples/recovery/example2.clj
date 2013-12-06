@@ -51,7 +51,7 @@
                   :auto-ack true)
 
     (while true
-      (Thread/sleep 2000)
+      (Thread/sleep 500)
       (try
         (let [rk (rand-nth ["abc" "def" "xyz" "123"])]
           (println (format "Publishing a message with routing key %s" rk))
