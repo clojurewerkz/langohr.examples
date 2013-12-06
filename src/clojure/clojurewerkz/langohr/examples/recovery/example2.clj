@@ -22,7 +22,7 @@
 
 (defn -main
   [& args]
-  ;; Topology recovery requires Langohr 1.8.0+. MK.
+  ;; Topology recovery requires Langohr 2.0+.0+. MK.
   (let [conn (rmq/connect {:automatically-recover true :automatically-recover-topology true :port (port)})
         ch1  (lch/open conn)
         ch2  (lch/open conn)
