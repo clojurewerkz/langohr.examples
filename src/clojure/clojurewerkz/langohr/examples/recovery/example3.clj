@@ -33,13 +33,14 @@
         q1   "langohr.examples.recovery.client_named_queue1"
         q2   "langohr.examples.recovery.client_named_queue2"
         q3   "langohr.examples.recovery.client_named_queue3"
-        q4   (lq/declare-server-named ch1 :exclusive true)
-        q5   (lq/declare-server-named ch2 :exclusive true)
-        q6   (lq/declare-server-named ch3 :exclusive true)
+        q4   (lq/declare-server-named ch3 :exclusive true)
+        q5   (lq/declare-server-named ch4 :exclusive true)
+        q6   (lq/declare-server-named ch5 :exclusive true)
         x1   "langohr.examples.recovery.fanout1"
         x2   "langohr.examples.recovery.fanout2"
         x3   "langohr.examples.recovery.fanout3"
-        x4   "langohr.examples.recovery.fanout4"]
+        x4   "langohr.examples.recovery.fanout4"
+        x5   "langohr.examples.recovery.should-not-be-recovered"]
     (println "Connected.")
     (lx/topic  ch1 x  :durable true)
     (lx/fanout ch1 x1 :durable true)
@@ -52,10 +53,12 @@
     (lq/bind ch1 q1 x :routing-key "abc")
     (lq/bind ch2 q2 x :routing-key "def")
     (lq/bind ch3 q3 x :routing-key "xyz")
-    (lq/bind ch1 q4 x1)
-    (lq/bind ch2 q5 x2)
-    (lq/bind ch3 q6 x3)
-    (lq/bind ch4 q6 x4)
+    (lq/bind ch3 q4 x1)
+    (lq/bind ch4 q5 x2)
+    (lq/bind ch5 q6 x3)
+    (lq/bind ch5 q6 x4)
+    (lx/fanout ch1 x5 :durable true)
+    (lx/delete ch1 x5)
     (println "Initialized the topology")
     (lc/subscribe ch1 q1 (fn [ch meta ^bytes payload]
                           (println (format "[Q1] Consumed %s on channel %d" (to-s payload) (.getChannelNumber ch)))
@@ -70,10 +73,10 @@
                           (lb/publish ch3 x3 "" (str (UUID/randomUUID))))
                   :auto-ack true)
 
-    (lc/subscribe ch4 q4 (fn [ch meta ^bytes payload]
+    (lc/subscribe ch3 q4 (fn [ch meta ^bytes payload]
                            (println (format "[Q4] Consumed %s"  (to-s payload))))
                   :auto-ack true)
-    (lc/subscribe ch5 q5 (fn [ch meta ^bytes payload]
+    (lc/subscribe ch4 q5 (fn [ch meta ^bytes payload]
                            (println (format "[Q5] Consumed %s" (to-s payload))))
                   :auto-ack true)
     (lc/subscribe ch5 q6 (fn [ch meta ^bytes payload]
