@@ -1,4 +1,4 @@
-(ns clojurewerkz.langohr.examples.recovery.example2
+(ns clojurewerkz.langohr.examples.recovery.example3
   (:gen-class)
   (:require [langohr.core      :as rmq]
             [langohr.channel   :as lch]
