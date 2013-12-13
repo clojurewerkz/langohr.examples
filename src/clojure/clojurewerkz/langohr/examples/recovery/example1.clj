@@ -12,10 +12,7 @@
 (defn message-handler
   [ch {:keys [content-type delivery-tag type] :as meta} ^bytes payload]
   (println (format "[consumer] Received a message: %s"
-                   (String. payload "UTF-8")
-                   delivery-tag
-                   content-type
-                   type)))
+                   (String. payload "UTF-8"))))
 
 (defn start-consumer
   [ch ^String q]
