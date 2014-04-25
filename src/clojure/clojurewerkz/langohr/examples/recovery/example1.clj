@@ -29,6 +29,7 @@
     (println (format "[main] Connected. Channel id: %d" (.getChannelNumber ch)))
     (start-consumer ch q)
     (rmq/on-recovery ch (fn [ch]
+                          (println "[main] Channel recovered. Recovering topology...")
                           (start-consumer ch q)))
     (while true
       (Thread/sleep 1000)
