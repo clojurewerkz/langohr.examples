@@ -1,6 +1,6 @@
 (defproject clojurewerkz/langohr.examples "1.0.0-SNAPSHOT"
   :description "Various examples for Langohr documentation"
-  :min-lein-version "2.4.2"
+  :min-lein-version "2.4.3"
   :license {:name "Eclipse Public License"}
   :dependencies [[org.clojure/clojure     "1.5.1"]
                  [com.novemberain/langohr "2.9.0"]]
