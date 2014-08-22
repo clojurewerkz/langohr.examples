@@ -23,13 +23,13 @@
   (let [handler (fn [ch {:keys [headers delivery-tag redelivery?]} ^bytes payload]
                   (println (format "%s received a message, i = %d, redelivery? = %s, acking..." id (get headers "i") redelivery?))
                   (lb/ack ch delivery-tag))]
-    (lc/subscribe ch queue handler :auto-ack false)))
+    (lc/subscribe ch queue handler {:auto-ack false})))
 
 (defn start-skipping-consumer
   [ch queue id]
   (let [handler (fn [ch {:keys [headers delivery-tag]} ^bytes payload]
                   (println (format "%s received a message, i = %d" id (get headers "i"))))]
-    (lc/subscribe ch queue handler :auto-ack false)))
+    (lc/subscribe ch queue handler {:auto-ack false})))
 
 
 (defn -main
@@ -45,8 +45,8 @@
         queue    "langohr.examples.redelivery"]
     (lb/qos ch1 1)
     (lb/qos ch2 1)
-    (lq/declare chx queue :auto-delete true :exclusive false)
-    (lq/bind    chx queue exchange :routing-key "key1")
+    (lq/declare chx queue {:auto-delete true :exclusive false})
+    (lq/bind    chx queue exchange {:routing-key "key1"})
     ;; this consumer will ack messages
     (start-acking-consumer   ch1 queue "consumer1")
     ;; this consumer won't ack messages and will "crash" in 4 seconds
@@ -54,7 +54,7 @@
     (let [i      (atom 0)
           future (periodically 800 (fn []
                                      (try
-                                       (lb/publish chx exchange "key1" "" :headers {"i" @i})
+                                       (lb/publish chx exchange "key1" "" {:headers {"i" @i}})
                                        (swap! i inc)
                                        (catch Throwable t
                                          (.printStackTrace t)))))]
