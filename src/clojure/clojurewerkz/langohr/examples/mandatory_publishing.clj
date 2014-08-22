@@ -17,7 +17,7 @@
         rl    (lb/return-listener (fn [reply-code reply-text exchange routing-key properties body]
                                     (println "Message returned. Reply text: " reply-text)))]
     (.addReturnListener ch rl)
-    (lb/publish ch default-exchange-name qname "Hello!" :content-type "text/plain" :mandatory true)
+    (lb/publish ch default-exchange-name qname "Hello!" {:content-type "text/plain" :mandatory true})
     (Thread/sleep 1000)
     (println "[main] Disconnecting...")
     (rmq/close ch)
