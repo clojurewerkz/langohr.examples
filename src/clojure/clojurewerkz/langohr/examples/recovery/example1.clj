@@ -16,12 +16,11 @@
 
 (defn start-consumer
   [ch ^String q]
-  (lq/declare ch q :exclusive false :auto-delete false)
-    (lc/subscribe ch q message-handler :auto-ack true))
+  (lq/declare ch q {:exclusive false :auto-delete false})
+    (lc/subscribe ch q message-handler {:auto-ack true}))
 
 (defn -main
   [& args]
-  ;; Topology recovery requires Langohr 2.0+.0+. MK.
   (let [conn (rmq/connect {:automatically-recover true :automatically-recover-topology false})
         ch   (lch/open conn)
         q    "langohr.examples.recovery.example1.q"

@@ -22,7 +22,6 @@
 
 (defn -main
   [& args]
-  ;; Topology recovery requires Langohr 2.0+.0+. MK.
   (let [conn (rmq/connect {:automatically-recover true :automatically-recover-topology true :port (port)})
         ch1  (lch/open conn)
         ch2  (lch/open conn)
@@ -42,46 +41,46 @@
         x4   "langohr.examples.recovery.fanout4"
         x5   "langohr.examples.recovery.should-not-be-recovered"]
     (println "Connected.")
-    (lx/topic  ch1 x  :durable true)
-    (lx/fanout ch1 x1 :durable true)
-    (lx/fanout ch2 x2 :durable true)
-    (lx/fanout ch3 x3 :durable true)
-    (lx/fanout ch4 x4 :durable true)
-    (lq/declare ch1 q1 :durable true)
-    (lq/declare ch2 q2 :durable true)
-    (lq/declare ch3 q3 :durable true)
-    (lq/bind ch1 q1 x :routing-key "abc")
-    (lq/bind ch2 q2 x :routing-key "def")
-    (lq/bind ch3 q3 x :routing-key "xyz")
+    (lx/topic  ch1 x  {:durable true})
+    (lx/fanout ch1 x1 {:durable true})
+    (lx/fanout ch2 x2 {:durable true})
+    (lx/fanout ch3 x3 {:durable true})
+    (lx/fanout ch4 x4 {:durable true})
+    (lq/declare ch1 q1 {:durable true})
+    (lq/declare ch2 q2 {:durable true})
+    (lq/declare ch3 q3 {:durable true})
+    (lq/bind ch1 q1 x {:routing-key "abc"})
+    (lq/bind ch2 q2 x {:routing-key "def"})
+    (lq/bind ch3 q3 x {:routing-key "xyz"})
     (lq/bind ch3 q4 x1)
     (lq/bind ch4 q5 x2)
     (lq/bind ch5 q6 x3)
     (lq/bind ch5 q6 x4)
-    (lx/fanout ch1 x5 :durable true)
+    (lx/fanout ch1 x5 {:durable true})
     (lx/delete ch1 x5)
     (println "Initialized the topology")
     (lc/subscribe ch1 q1 (fn [ch meta ^bytes payload]
                           (println (format "[Q1] Consumed %s on channel %d" (to-s payload) (.getChannelNumber ch)))
                           (lb/publish ch1 x1 "" (str (UUID/randomUUID))))
-                  :auto-ack true)
+                  {:auto-ack true})
     (lc/subscribe ch2 q2 (fn [ch meta ^bytes payload]
                           (println (format "[Q2] Consumed %s on channel %d" (to-s payload) (.getChannelNumber ch)))
                           (lb/publish ch2 x2 "" (str (UUID/randomUUID))))
-                  :auto-ack true)
+                  {:auto-ack true})
     (lc/subscribe ch3 q3 (fn [ch meta ^bytes payload]
                           (println (format "[Q3] Consumed %s on channel %d" (to-s payload) (.getChannelNumber ch)))
                           (lb/publish ch3 x3 "" (str (UUID/randomUUID))))
-                  :auto-ack true)
+                  {:auto-ack true})
 
     (lc/subscribe ch3 q4 (fn [ch meta ^bytes payload]
-                           (println (format "[Q4] Consumed %s"  (to-s payload))))
-                  :auto-ack true)
+                           (println (format "[Q4] Consumed %s" (to-s payload))))
+                  {:auto-ack true})
     (lc/subscribe ch4 q5 (fn [ch meta ^bytes payload]
                            (println (format "[Q5] Consumed %s" (to-s payload))))
-                  :auto-ack true)
+                  {:auto-ack true})
     (lc/subscribe ch5 q6 (fn [ch meta ^bytes payload]
                            (println (format "[Q6] Consumed %s" (to-s payload))))
-                  :auto-ack true)
+                  {:auto-ack true})
 
     (while true
       (Thread/sleep 500)
