@@ -13,7 +13,7 @@
   (let [conn  (rmq/connect)
         ch    (lch/open conn)
         qname "clojurewerkz.langohr.examples.per-queue-message-ttl"]
-    (lq/declare ch qname :arguments {"x-message-ttl" 500} :durable false)
+    (lq/declare ch qname {:arguments {"x-message-ttl" 500} :durable false})
     (lb/publish ch default-exchange-name qname "a message")
     (Thread/sleep 50)
     (println (format "Queue %s has %d messages" qname (lq/message-count ch qname)))
