@@ -15,7 +15,7 @@
                   (println (format "[consumer] %s received a message: %s"
                                    queue-name
                                    (String. payload "UTF-8"))))]
-    (lc/subscribe ch queue-name handler :auto-ack true)))
+    (lc/subscribe ch queue-name handler {:auto-ack true})))
 
 (defn -main
   [& args]
@@ -24,10 +24,10 @@
         ename "langohr.examples.fanout"]
     (le/declare ch ename "fanout")
     (dotimes [i 10]
-      (let [q (.getQueue (lq/declare ch "" :exclusive false :auto-delete true))]
+      (let [q (:queue (lq/declare ch "" {:exclusive false :auto-delete true}))]
         (lq/bind    ch q ename)
         (start-consumer ch q)))
-    (lb/publish ch ename "" "Ping" :content-type "text/plain")
+    (lb/publish ch ename "" "Ping" {:content-type "text/plain"})
     (Thread/sleep 2000)
     (println "[main] Disconnecting...")
     (rmq/close ch)
