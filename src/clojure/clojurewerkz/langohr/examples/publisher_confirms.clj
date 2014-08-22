@@ -18,7 +18,7 @@
         q     (lq/declare-server-named ch)]
     (dotimes [n 1000]
       (lb/publish ch default-exchange-name q "msg"))
-    (.waitForConfirms ch)
+    (lcf/wait-for-confirms ch)
     (println "All confirms arrived...")
     (println "[main] Disconnecting...")
     (rmq/close ch)
