@@ -21,7 +21,7 @@
   [& args]
   (let [conn  (rmq/connect)
         ch    (lch/open conn)
-        qname (:queue (lq/declare ch "clojurewerkz.langohr.examples.basic-nack.q" :exclusive true))]
+        qname (:queue (lq/declare ch "clojurewerkz.langohr.examples.basic-nack.q" {:exclusive true}))]
     (lcons/subscribe ch qname consumer1-fn)
     (lcons/subscribe ch qname consumer2-fn)
     (dotimes [n 30]
