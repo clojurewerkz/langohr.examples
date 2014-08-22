@@ -13,14 +13,15 @@
   (let [conn  (rmq/connect)
         ch    (lch/open conn)
         q     (lq/declare-server-named ch)
-        latch (CountDownLatch. 1)]
+        latch (CountDownLatch. 1)
+        on-cancel (fn [consumer-tag]
+                    (println (format "Consumer %s has been cancelled" consumer-tag))
+                    (.countDown latch))]
     (lcons/subscribe ch q
                      (fn [ch {:keys [delivery-tag]} ^bytes payload]
                        (comment "No op"))
-                     :auto-ack true
-                     :handle-cancel-fn (fn [consumer-tag]
-                                         (println (format "Consumer %s has been cancelled" consumer-tag))
-                                         (.countDown latch)))
+                     {:auto-ack true
+                      :handle-cancel-fn on-cancel})
     (lq/delete ch q)
     (.await latch 200 TimeUnit/MILLISECONDS)
     (println "[main] Disconnecting...")
