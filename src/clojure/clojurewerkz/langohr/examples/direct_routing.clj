@@ -15,7 +15,7 @@
                   (println (format "[consumer] %s received a message: %s"
                                    queue-name
                                    (String. payload "UTF-8"))))]
-    (lc/subscribe ch queue-name handler :auto-ack true)))
+    (lc/subscribe ch queue-name handler {:auto-ack true})))
 
 (defn -main
   [& args]
@@ -23,10 +23,10 @@
         ch    (lch/open conn)
         ename "langohr.examples.direct"]
     (le/declare ch ename "direct")
-    (let [q (.getQueue (lq/declare ch "" :exclusive false :auto-delete true))]
-      (lq/bind ch q ename :routing-key "pings")
+    (let [q (.getQueue (lq/declare ch "" {:exclusive false :auto-delete true}))]
+      (lq/bind ch q ename {:routing-key "pings"})
       (start-consumer ch q))
-    (lb/publish ch ename "pings" "Ping" :content-type "text/plain")
+    (lb/publish ch ename "pings" "Ping" {:content-type "text/plain"})
     (Thread/sleep 2000)
     (println "[main] Disconnecting...")
     (rmq/close ch)
