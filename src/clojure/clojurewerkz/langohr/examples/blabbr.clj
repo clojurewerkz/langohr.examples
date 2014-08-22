@@ -13,9 +13,9 @@
   (let [queue-name (format "nba.newsfeeds.%s" username)
         handler    (fn [ch metadata ^bytes payload]
                      (println (format "[consumer] %s received %s" username (String. payload "UTF-8"))))]
-    (lq/declare ch queue-name :exclusive false :auto-delete true)
+    (lq/declare ch queue-name {:exclusive false :auto-delete true})
     (lq/bind    ch queue-name topic-name)
-    (lc/subscribe ch queue-name handler :auto-ack true)))
+    (lc/subscribe ch queue-name handler {:auto-ack true})))
 
 (defn -main
   [& args]
@@ -23,11 +23,11 @@
         ch    (lch/open conn)
         ex    "nba.scores"
         users ["joe" "aaron" "bob"]]
-    (le/declare ch ex "fanout" :durable false :auto-delete true)
+    (le/declare ch ex "fanout" {:durable false :auto-delete true})
     (doseq [u users]
       (start-consumer ch "nba.scores" u))
-    (lb/publish ch ex "" "BOS 101, NYK 89" :content-type "text/plain" :type "scores.update")
-    (lb/publish ch ex "" "ORL 85, ALT 88"  :content-type "text/plain" :type "scores.update")
+    (lb/publish ch ex "" "BOS 101, NYK 89" {:content-type "text/plain" :type "scores.update"})
+    (lb/publish ch ex "" "ORL 85, ALT 88"  {:content-type "text/plain" :type "scores.update"})
     (Thread/sleep 2000)
     (rmq/close ch)
     (rmq/close conn)))
