@@ -11,16 +11,16 @@
         ch    (lch/open conn)
         qname "clojurewerkz.langohr.examples.queue-ttl"]
     (lq/declare ch qname {:arguments {"x-expires" 500}})
-    (Thread/sleep 600)
+    (Thread/sleep 700)
     (try
       (lq/declare-passive ch qname)
       (catch java.io.IOException ioe
           (let [shutdown-ex (.getCause ioe)
                 code        (-> (lsh/reason-of shutdown-ex)
-                                .getMethod
                                 .getReplyCode)]
             (when (= code 404)
               (println "Queue no longer exists")))))
+    (Thread/sleep 500)
     (println "[main] Disconnecting...")
     (when (rmq/open? ch)
       (rmq/close ch))
