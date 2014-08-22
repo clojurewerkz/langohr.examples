@@ -16,8 +16,7 @@
       (lq/declare-passive ch qname)
       (catch java.io.IOException ioe
           (let [shutdown-ex (.getCause ioe)
-                code        (-> (lsh/reason-of shutdown-ex)
-                                .getReplyCode)]
+                code        (.getReplyCode (lsh/reason-of shutdown-ex))]
             (when (= code 404)
               (println "Queue no longer exists")))))
     (Thread/sleep 500)
