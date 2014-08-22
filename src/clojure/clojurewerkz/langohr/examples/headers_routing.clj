@@ -15,7 +15,7 @@
                   (println (format "[consumer] %s received a message: %s"
                                    queue-name
                                    (String. payload "UTF-8"))))]
-    (lc/subscribe ch queue-name handler :auto-ack true)))
+    (lc/subscribe ch queue-name handler {:auto-ack true})))
 
 (defn -main
   [& args]
@@ -23,15 +23,15 @@
         ch    (lch/open conn)
         ename "langohr.examples.headers"]
     (le/declare ch ename "headers")
-    (let [qname (.getQueue (lq/declare ch "" :auto-delete true :exclusive false))]
-      (lq/bind ch qname ename :arguments {"os" "linux" "cores" 8 "x-match" "all"})
+    (let [qname (:queue (lq/declare ch "" ))]
+      (lq/bind ch qname ename {:arguments {"os" "linux" "cores" 8 "x-match" "all"}})
       (start-consumer ch qname))
-    (let [qname (.getQueue (lq/declare ch "" :auto-delete true :exclusive false))]
-      (lq/bind ch qname ename :arguments {"os" "osx" "cores" 4 "x-match" "any"})
+    (let [qname (:queue (lq/declare ch "" {:auto-delete true :exclusive false}))]
+      (lq/bind ch qname ename {:arguments {"os" "osx" "cores" 4 "x-match" "any"}})
       (start-consumer ch qname))
-    (lb/publish ch ename "" "8 cores/Linux" :content-type "text/plain" :headers {"os" "linux" "cores" 8})
-    (lb/publish ch ename "" "8 cores/OS X"  :content-type "text/plain" :headers {"os" "osx"   "cores" 8})
-    (lb/publish ch ename "" "4 cores/Linux" :content-type "text/plain" :headers {"os" "linux" "cores" 4})
+    (lb/publish ch ename "" "8 cores/Linux" {:content-type "text/plain" :headers {"os" "linux" "cores" 8}})
+    (lb/publish ch ename "" "8 cores/OS X"  {:content-type "text/plain" :headers {"os" "osx"   "cores" 8}})
+    (lb/publish ch ename "" "4 cores/Linux" {:content-type "text/plain" :headers {"os" "linux" "cores" 4}})
     (Thread/sleep 2000)
     (println "[main] Disconnecting...")
     (rmq/close ch)
