@@ -20,7 +20,7 @@
 (defn start-consumer
   "Starts a consumer in a separate thread"
   [ch queue-name]
-  (lc/subscribe ch queue-name message-handler :auto-ack true))
+  (lc/subscribe ch queue-name message-handler {:auto-ack true}))
 
 (defn -main
   [& args]
@@ -28,10 +28,10 @@
         ch    (lch/open conn)
         qname "langohr.examples.hello-world"]
     (println (format "[main] Connected. Channel id: %d" (.getChannelNumber ch)))
-    (lq/declare ch qname :exclusive false :auto-delete true)
+    (lq/declare ch qname {:exclusive false :auto-delete true})
     (start-consumer ch qname)
     (println "[main] Publishing...")
-    (lb/publish ch default-exchange-name qname "Hello!" :content-type "text/plain" :type "greetings.hi")
+    (lb/publish ch default-exchange-name qname "Hello!" {:content-type "text/plain" :type "greetings.hi"})
     (Thread/sleep 2000)
     (println "[main] Disconnecting...")
     (rmq/close ch)
