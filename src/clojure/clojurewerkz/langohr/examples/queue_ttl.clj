@@ -10,7 +10,7 @@
   (let [conn  (rmq/connect)
         ch    (lch/open conn)
         qname "clojurewerkz.langohr.examples.queue-ttl"]
-    (lq/declare ch qname :arguments {"x-expires" 500})
+    (lq/declare ch qname {:arguments {"x-expires" 500}})
     (Thread/sleep 600)
     (try
       (lq/declare-passive ch qname)
