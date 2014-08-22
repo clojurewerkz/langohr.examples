@@ -13,10 +13,10 @@
         x1   "clojurewerkz.langohr.examples.alternate-exchange.x1"
         x2   "clojurewerkz.langohr.examples.alternate-exchange.x2"
         q    (lq/declare-server-named ch)]
-    (lx/fanout ch x1 :durable false)
+    (lx/fanout ch x1 {:durable false})
     (lx/fanout ch x2
-               :durable false
-               :arguments {"alternate-exchange" x1})
+               {:durable false
+                :arguments {"alternate-exchange" x1}})
     (lq/bind ch q x1)
     (lb/publish ch x2 "_" "a message")
     (Thread/sleep 50)
