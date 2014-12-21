@@ -3,7 +3,7 @@
   :min-lein-version "2.5.0"
   :license {:name "Eclipse Public License"}
   :dependencies [[org.clojure/clojure     "1.6.0"]
-                 [com.novemberain/langohr "3.0.0-rc4"]]
+                 [com.novemberain/langohr "3.0.0"]]
   :source-paths  ["src/clojure"]
   :url "https://github.com/clojurewerkz/langohr.examples"
   :repositories {"sonatype" {:url "http://oss.sonatype.org/content/repositories/releases"
