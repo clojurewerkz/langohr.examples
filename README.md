@@ -19,6 +19,6 @@ and so on.
 
 ## License
 
-Copyright (C) 2011-2015 Michael S. Klishin.
+Copyright (C) 2011-2016 Michael S. Klishin.
 
 Distributed under the Eclipse Public License, the same as Clojure.
